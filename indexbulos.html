@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cazadores de Bulos · 3º ESO</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0c0e14;--bg2:#11141c;--bg3:#171b26;
+  --surf:#1d2130;--surf2:#232840;
+  --bdr:rgba(255,255,255,0.07);--bdr2:rgba(255,255,255,0.13);
+  --txt:#dde0ef;--txt2:#7c82a0;--txt3:#444965;
+  --acc:#5d7cff;--acc2:#3d5ce0;
+  --grn:#3fd68a;--grn-bg:rgba(63,214,138,0.09);--grn-bd:rgba(63,214,138,0.22);
+  --amb:#f5b93e;--amb-bg:rgba(245,185,62,0.09);--amb-bd:rgba(245,185,62,0.22);
+  --cor:#f06a6a;--cor-bg:rgba(240,106,106,0.09);--cor-bd:rgba(240,106,106,0.22);
+  --pur:#a07cf5;--pur-bg:rgba(160,124,245,0.09);--pur-bd:rgba(160,124,245,0.22);
+  --tel:#30cfa0;--tel-bg:rgba(48,207,160,0.09);--tel-bd:rgba(48,207,160,0.22);
+  --pnk:#e86aba;--pnk-bg:rgba(232,106,186,0.09);--pnk-bd:rgba(232,106,186,0.22);
+}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;font-size:15px}
+
+/* ── HEADER ── */
+.hdr{position:sticky;top:0;z-index:200;background:rgba(12,14,20,0.93);backdrop-filter:blur(16px);border-bottom:1px solid var(--bdr);padding:.9rem 2rem}
+.hdr-inner{max-width:880px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.hdr-brand{font-family:'Syne',sans-serif;font-weight:800;font-size:1.1rem;color:#fff;letter-spacing:-.02em}
+.hdr-brand span{color:var(--acc)}
+.hdr-chips{display:flex;gap:5px;flex-wrap:wrap;margin-top:4px}
+.chip{font-size:.6rem;font-weight:500;letter-spacing:.05em;text-transform:uppercase;padding:2px 9px;border-radius:20px;border:1px solid var(--bdr2);color:var(--txt2);background:var(--surf)}
+.prog-wrap{text-align:right;min-width:120px}
+.prog-lbl{font-size:.62rem;color:var(--txt3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+.prog-track{height:3px;background:var(--surf2);border-radius:2px;overflow:hidden}
+.prog-fill{height:100%;background:var(--acc);border-radius:2px;width:0%;transition:width .5s ease}
+.prog-pts{font-family:'Syne',sans-serif;font-size:.8rem;font-weight:700;color:var(--acc);margin-top:3px}
+
+/* ── WORKFLOW ── */
+.wf-wrap{max-width:880px;margin:1.25rem auto 0;padding:0 1.5rem}
+.wf{background:var(--bg3);border:1px solid var(--bdr2);border-radius:14px;padding:.85rem 1.1rem;display:flex;gap:0;flex-wrap:wrap}
+.wf-s{flex:1;min-width:140px;display:flex;flex-direction:column;align-items:center;text-align:center;padding:.4rem .6rem;position:relative}
+.wf-s:not(:last-child)::after{content:'→';position:absolute;right:-6px;top:50%;transform:translateY(-50%);color:var(--txt3);font-size:.9rem}
+.wf-ic{font-size:1.3rem;margin-bottom:4px}
+.wf-t{font-family:'Syne',sans-serif;font-size:.68rem;font-weight:700;color:var(--txt);margin-bottom:2px}
+.wf-d{font-size:.64rem;color:var(--txt2);line-height:1.5}
+
+/* ── MAIN ── */
+.main{max-width:880px;margin:0 auto;padding:1.25rem 1.5rem 5rem}
+
+/* ── CARD ── */
+.act{border:1px solid var(--bdr);border-radius:16px;background:var(--bg2);margin-bottom:1.1rem;overflow:hidden;transition:border-color .2s}
+.act.done{border-color:var(--grn-bd)}
+.act:hover{border-color:var(--bdr2)}
+.act-hdr{padding:1rem 1.35rem;display:flex;align-items:flex-start;gap:.85rem;cursor:pointer;user-select:none}
+.act-num{font-family:'Syne',sans-serif;font-weight:800;font-size:.9rem;min-width:1.9rem;height:1.9rem;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1.5px solid;transition:all .3s}
+.act-done-mark{display:none}
+.act.done .act-done-mark{display:inline}
+.act.done .act-num-n{display:none}
+.act-hdr-txt{flex:1}
+.act-title{font-family:'Syne',sans-serif;font-weight:700;font-size:.92rem;color:#fff;line-height:1.3;margin-bottom:3px}
+.act-hook{font-size:.78rem;font-style:italic;color:var(--txt2);line-height:1.55}
+.act-tags{display:flex;gap:4px;flex-wrap:wrap;margin-top:5px}
+.tag{font-size:.58rem;font-weight:500;letter-spacing:.05em;text-transform:uppercase;padding:2px 7px;border-radius:20px}
+.tag-modo{background:var(--surf2);color:var(--txt2);border:1px solid var(--bdr2)}
+.tag-pts{background:rgba(255,255,255,0.04);color:var(--txt3);border:1px solid var(--bdr)}
+.act-arrow{color:var(--txt3);font-size:1rem;transition:transform .3s;flex-shrink:0;margin-top:2px}
+.act-arrow.open{transform:rotate(180deg)}
+
+/* ── BODY ── */
+.act-body{display:none;border-top:1px solid var(--bdr)}
+.act-body.open{display:block}
+.act-desc{padding:1rem 1.35rem 0;font-size:.86rem;color:var(--txt);line-height:1.75}
+.qblock{display:block;background:var(--surf);border-radius:9px;padding:.65rem .9rem;margin-top:.55rem;font-style:italic;font-size:.82rem;color:var(--txt2);line-height:1.7;border-left:3px solid}
+.cblock{display:block;background:var(--surf);border-radius:8px;padding:.6rem .85rem;margin-top:.5rem;font-family:monospace;font-size:.79rem;line-height:2;border-left:3px solid}
+
+/* ── GUIDANCE ── */
+.guid{margin:.9rem 1.35rem 0;border:1px solid;border-radius:11px;overflow:hidden}
+.g-hdr{padding:.5rem .9rem;font-family:'Syne',sans-serif;font-size:.65rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;display:flex;align-items:center;gap:5px}
+.g-steps{padding:0 .9rem .8rem}
+.g-step{display:flex;gap:.6rem;padding:.55rem 0;border-bottom:1px solid rgba(255,255,255,0.04);align-items:flex-start}
+.g-step:last-child{border-bottom:none}
+.g-n{font-family:'Syne',sans-serif;font-weight:700;font-size:.62rem;min-width:1.25rem;height:1.25rem;border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+.g-txt{font-size:.8rem;color:var(--txt);line-height:1.65}
+.g-txt strong{font-weight:500}
+.g-txt em{color:var(--txt2);font-style:italic}
+
+/* ── DRAFT ── */
+.draft{padding:1rem 1.35rem}
+.draft-lbl{font-size:.64rem;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--txt3);margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.draft-note{font-size:.62rem;font-weight:400;letter-spacing:0;text-transform:none;color:var(--txt3);font-style:italic}
+textarea{width:100%;background:var(--bg3);border:1px solid var(--bdr2);border-radius:9px;color:var(--txt);font-family:'DM Sans',sans-serif;font-size:.84rem;line-height:1.7;padding:.75rem .9rem;resize:vertical;min-height:100px;outline:none;transition:border-color .2s}
+textarea:focus{border-color:var(--acc)}
+textarea::placeholder{color:var(--txt3)}
+.btn-row{display:flex;align-items:center;gap:8px;margin-top:.6rem;flex-wrap:wrap}
+.btn-fb{padding:.48rem 1rem;border-radius:8px;border:none;cursor:pointer;font-family:'Syne',sans-serif;font-weight:700;font-size:.72rem;letter-spacing:.03em;display:flex;align-items:center;gap:5px;transition:opacity .15s,transform .1s}
+.btn-fb:hover{opacity:.86}
+.btn-fb:active{transform:scale(.97)}
+.btn-fb:disabled{opacity:.35;cursor:default}
+.btn-sec{padding:.48rem .9rem;border-radius:8px;border:1px solid var(--bdr2);cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.76rem;font-weight:500;background:var(--surf);color:var(--txt2);transition:background .15s,color .15s}
+.btn-sec:hover{background:var(--surf2);color:var(--txt)}
+.copy-ok{font-size:.72rem;color:var(--grn);opacity:0;transition:opacity .3s;display:flex;align-items:center;gap:4px}
+.copy-ok.show{opacity:1}
+
+/* ── FEEDBACK PANEL ── */
+.fb-panel{margin:0 1.35rem .9rem;border:1px solid;border-radius:11px;overflow:hidden;display:none}
+.fb-panel.show{display:block}
+.fb-hdr{padding:.5rem .9rem;font-family:'Syne',sans-serif;font-size:.65rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;display:flex;align-items:center;justify-content:space-between;gap:6px}
+.fb-hdr-left{display:flex;align-items:center;gap:5px}
+.fb-body{padding:.8rem .9rem;font-size:.82rem;line-height:1.78;color:var(--txt);white-space:pre-wrap}
+.fb-thinking{display:flex;align-items:center;gap:8px;color:var(--txt2);font-style:italic;font-size:.78rem}
+.dot-anim span{display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--txt3);animation:dotP 1.2s infinite}
+.dot-anim span:nth-child(2){animation-delay:.2s}
+.dot-anim span:nth-child(3){animation-delay:.4s}
+@keyframes dotP{0%,80%,100%{transform:scale(.7);opacity:.4}40%{transform:scale(1);opacity:1}}
+.fb-actions{padding:0 .9rem .8rem;display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.btn-explicit{padding:.42rem .85rem;border-radius:7px;border:1px solid;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.74rem;font-weight:500;transition:background .15s;display:flex;align-items:center;gap:5px}
+
+/* ── RESUMEN PANEL (para Google Doc) ── */
+.sum-panel{margin:0 1.35rem 1.35rem;border-radius:11px;overflow:hidden;display:none}
+.sum-panel.show{display:block}
+.sum-hdr{padding:.6rem .9rem;font-family:'Syne',sans-serif;font-size:.65rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;display:flex;align-items:center;justify-content:space-between}
+.sum-body{padding:.8rem .9rem;font-size:.8rem;line-height:1.75;white-space:pre-wrap}
+.sum-copy-row{padding:0 .9rem .85rem;display:flex;align-items:center;gap:8px}
+.sum-instructions{font-size:.73rem;color:var(--txt2);line-height:1.5;padding:.65rem .9rem;border-top:1px solid rgba(255,255,255,0.06)}
+.sum-instructions strong{color:var(--txt);font-weight:500}
+
+/* ── COLORES POR ACTIVIDAD ── */
+.c-blue .act-num{color:var(--acc);border-color:var(--acc)}
+.c-blue .tag-tipo{background:rgba(93,124,255,.12);color:var(--acc);border:1px solid rgba(93,124,255,.25)}
+.c-blue .guid{border-color:rgba(93,124,255,.18)}
+.c-blue .g-hdr{background:rgba(93,124,255,.08);color:var(--acc)}
+.c-blue .g-n{background:rgba(93,124,255,.14);color:var(--acc)}
+.c-blue .btn-fb{background:var(--acc2);color:#fff}
+.c-blue .btn-fb:hover{background:var(--acc)}
+.c-blue .fb-panel{border-color:rgba(93,124,255,.22)}
+.c-blue .fb-hdr{background:rgba(93,124,255,.08);color:var(--acc)}
+.c-blue .btn-explicit{background:rgba(93,124,255,.08);color:var(--acc);border-color:rgba(93,124,255,.25)}
+.c-blue .btn-explicit:hover{background:rgba(93,124,255,.16)}
+.c-blue .sum-panel{border:1px solid rgba(93,124,255,.22)}
+.c-blue .sum-hdr{background:rgba(93,124,255,.08);color:var(--acc)}
+.c-blue .sum-body{background:var(--bg3)}
+
+.c-grn .act-num{color:var(--grn);border-color:var(--grn)}
+.c-grn .tag-tipo{background:var(--grn-bg);color:var(--grn);border:1px solid var(--grn-bd)}
+.c-grn .guid{border-color:var(--grn-bd)}
+.c-grn .g-hdr{background:var(--grn-bg);color:var(--grn)}
+.c-grn .g-n{background:rgba(63,214,138,.14);color:var(--grn)}
+.c-grn .btn-fb{background:#1a6640;color:var(--grn);border:1px solid var(--grn-bd)}
+.c-grn .btn-fb:hover{background:#1e7a4c}
+.c-grn .fb-panel{border-color:var(--grn-bd)}
+.c-grn .fb-hdr{background:var(--grn-bg);color:var(--grn)}
+.c-grn .btn-explicit{background:var(--grn-bg);color:var(--grn);border-color:var(--grn-bd)}
+.c-grn .btn-explicit:hover{background:rgba(63,214,138,.16)}
+.c-grn .sum-panel{border:1px solid var(--grn-bd)}
+.c-grn .sum-hdr{background:var(--grn-bg);color:var(--grn)}
+.c-grn .sum-body{background:var(--bg3)}
+
+.c-amb .act-num{color:var(--amb);border-color:var(--amb)}
+.c-amb .tag-tipo{background:var(--amb-bg);color:var(--amb);border:1px solid var(--amb-bd)}
+.c-amb .guid{border-color:var(--amb-bd)}
+.c-amb .g-hdr{background:var(--amb-bg);color:var(--amb)}
+.c-amb .g-n{background:rgba(245,185,62,.14);color:var(--amb)}
+.c-amb .btn-fb{background:#6b4a0a;color:var(--amb);border:1px solid var(--amb-bd)}
+.c-amb .btn-fb:hover{background:#7d5810}
+.c-amb .fb-panel{border-color:var(--amb-bd)}
+.c-amb .fb-hdr{background:var(--amb-bg);color:var(--amb)}
+.c-amb .btn-explicit{background:var(--amb-bg);color:var(--amb);border-color:var(--amb-bd)}
+.c-amb .btn-explicit:hover{background:rgba(245,185,62,.16)}
+.c-amb .sum-panel{border:1px solid var(--amb-bd)}
+.c-amb .sum-hdr{background:var(--amb-bg);color:var(--amb)}
+.c-amb .sum-body{background:var(--bg3)}
+
+.c-cor .act-num{color:var(--cor);border-color:var(--cor)}
+.c-cor .tag-tipo{background:var(--cor-bg);color:var(--cor);border:1px solid var(--cor-bd)}
+.c-cor .guid{border-color:var(--cor-bd)}
+.c-cor .g-hdr{background:var(--cor-bg);color:var(--cor)}
+.c-cor .g-n{background:rgba(240,106,106,.14);color:var(--cor)}
+.c-cor .btn-fb{background:#6b1e1e;color:var(--cor);border:1px solid var(--cor-bd)}
+.c-cor .btn-fb:hover{background:#7e2424}
+.c-cor .fb-panel{border-color:var(--cor-bd)}
+.c-cor .fb-hdr{background:var(--cor-bg);color:var(--cor)}
+.c-cor .btn-explicit{background:var(--cor-bg);color:var(--cor);border-color:var(--cor-bd)}
+.c-cor .btn-explicit:hover{background:rgba(240,106,106,.16)}
+.c-cor .sum-panel{border:1px solid var(--cor-bd)}
+.c-cor .sum-hdr{background:var(--cor-bg);color:var(--cor)}
+.c-cor .sum-body{background:var(--bg3)}
+
+.c-pur .act-num{color:var(--pur);border-color:var(--pur)}
+.c-pur .tag-tipo{background:var(--pur-bg);color:var(--pur);border:1px solid var(--pur-bd)}
+.c-pur .guid{border-color:var(--pur-bd)}
+.c-pur .g-hdr{background:var(--pur-bg);color:var(--pur)}
+.c-pur .g-n{background:rgba(160,124,245,.14);color:var(--pur)}
+.c-pur .btn-fb{background:#3d2470;color:var(--pur);border:1px solid var(--pur-bd)}
+.c-pur .btn-fb:hover{background:#4a2d85}
+.c-pur .fb-panel{border-color:var(--pur-bd)}
+.c-pur .fb-hdr{background:var(--pur-bg);color:var(--pur)}
+.c-pur .btn-explicit{background:var(--pur-bg);color:var(--pur);border-color:var(--pur-bd)}
+.c-pur .btn-explicit:hover{background:rgba(160,124,245,.16)}
+.c-pur .sum-panel{border:1px solid var(--pur-bd)}
+.c-pur .sum-hdr{background:var(--pur-bg);color:var(--pur)}
+.c-pur .sum-body{background:var(--bg3)}
+
+.c-tel .act-num{color:var(--tel);border-color:var(--tel)}
+.c-tel .tag-tipo{background:var(--tel-bg);color:var(--tel);border:1px solid var(--tel-bd)}
+.c-tel .guid{border-color:var(--tel-bd)}
+.c-tel .g-hdr{background:var(--tel-bg);color:var(--tel)}
+.c-tel .g-n{background:rgba(48,207,160,.14);color:var(--tel)}
+.c-tel .btn-fb{background:#0e5540;color:var(--tel);border:1px solid var(--tel-bd)}
+.c-tel .btn-fb:hover{background:#12664d}
+.c-tel .fb-panel{border-color:var(--tel-bd)}
+.c-tel .fb-hdr{background:var(--tel-bg);color:var(--tel)}
+.c-tel .btn-explicit{background:var(--tel-bg);color:var(--tel);border-color:var(--tel-bd)}
+.c-tel .btn-explicit:hover{background:rgba(48,207,160,.16)}
+.c-tel .sum-panel{border:1px solid var(--tel-bd)}
+.c-tel .sum-hdr{background:var(--tel-bg);color:var(--tel)}
+.c-tel .sum-body{background:var(--bg3)}
+
+.c-pnk .act-num{color:var(--pnk);border-color:var(--pnk)}
+.c-pnk .tag-tipo{background:var(--pnk-bg);color:var(--pnk);border:1px solid var(--pnk-bd)}
+.c-pnk .guid{border-color:var(--pnk-bd)}
+.c-pnk .g-hdr{background:var(--pnk-bg);color:var(--pnk)}
+.c-pnk .g-n{background:rgba(232,106,186,.14);color:var(--pnk)}
+.c-pnk .btn-fb{background:#5a1940;color:var(--pnk);border:1px solid var(--pnk-bd)}
+.c-pnk .btn-fb:hover{background:#6d1f4d}
+.c-pnk .fb-panel{border-color:var(--pnk-bd)}
+.c-pnk .fb-hdr{background:var(--pnk-bg);color:var(--pnk)}
+.c-pnk .btn-explicit{background:var(--pnk-bg);color:var(--pnk);border-color:var(--pnk-bd)}
+.c-pnk .btn-explicit:hover{background:rgba(232,106,186,.16)}
+.c-pnk .sum-panel{border:1px solid var(--pnk-bd)}
+.c-pnk .sum-hdr{background:var(--pnk-bg);color:var(--pnk)}
+.c-pnk .sum-body{background:var(--bg3)}
+
+.act.done .act-num{background:var(--grn-bg)!important;border-color:var(--grn)!important;color:var(--grn)!important}
+
+.ftr{text-align:center;padding:1.75rem;color:var(--txt3);font-size:.72rem;border-top:1px solid var(--bdr);max-width:880px;margin:0 auto}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="hdr-inner">
+    <div>
+      <div class="hdr-brand">Cazadores de <span>Bulos</span></div>
+      <div class="hdr-chips">
+        <span class="chip">3º ESO</span>
+        <span class="chip">Alfabetización mediática</span>
+        <span class="chip">Era de la IA</span>
+        <span class="chip">10 actividades · 10 pts</span>
+      </div>
+    </div>
+    <div class="prog-wrap">
+      <div class="prog-lbl">Progreso</div>
+      <div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
+      <div class="prog-pts" id="progPts">0 / 10</div>
+    </div>
+  </div>
+</header>
+
+<div class="wf-wrap">
+  <div class="wf">
+    <div class="wf-s"><div class="wf-ic">📖</div><div class="wf-t">1. Lee la guía</div><div class="wf-d">Sigue los pasos antes de escribir</div></div>
+    <div class="wf-s"><div class="wf-ic">✏️</div><div class="wf-t">2. Escribe tu borrador</div><div class="wf-d">Responde en la caja de texto</div></div>
+    <div class="wf-s"><div class="wf-ic">🤖</div><div class="wf-t">3. Pide feedback</div><div class="wf-d">Recibe orientación y mejora</div></div>
+    <div class="wf-s"><div class="wf-ic">📋</div><div class="wf-t">4. Genera el resumen</div><div class="wf-d">Cópialo y pégalo en el Google Doc</div></div>
+  </div>
+</div>
+
+<main class="main" id="mainContent"></main>
+
+<footer class="ftr">
+  Alfabetización Mediática e Informacional · 3º ESO · Borrador → Feedback IA → Resumen para Google Doc → Entrega en Classroom
+</footer>
+
+<script>
+/* ════════════════════════════════════════════
+   DATOS DE LAS 10 ACTIVIDADES
+════════════════════════════════════════════ */
+const ACTS = [
+  {
+    id:1, color:'c-blue',
+    title:'El ecosistema de la mentira: mapa conceptual',
+    hook:'"¿Sabes realmente la diferencia entre una fake news, un deepfake y un bulo de WhatsApp? No es lo mismo engañar que equivocarse."',
+    tags:['Conceptual','Individual + puesta en común'],
+    pts:'1 punto',
+    desc:`Construye un mapa conceptual que diferencie estos 8 términos: <strong>fake news, desinformación, misinformación, malinformación, clickbait, deepfake, sesgo de confirmación y fake reviews</strong>. Para cada término escribe tu propia definición breve y un ejemplo real que hayas visto en tus redes o en las noticias.`,
+    steps:[
+      ['Antes de escribir, pregúntate','¿cuáles de estos 8 términos conocías ya? Marca mentalmente los que no tenías claros. Ser honesto sobre lo que no sabes es el primer acto de pensamiento crítico.'],
+      ['La clave que los diferencia es la INTENCIÓN','¿Quien difunde la información lo hace a propósito para dañar, o comete un error sin mala fe? Esa diferencia cambia cómo debemos responder como sociedad.'],
+      ['Para cada concepto, busca un ejemplo TUYO','Algo visto esta semana en TikTok, Instagram o WhatsApp. <em>Si no encuentras ninguno, eso también es información valiosa sobre lo que aún no reconoces.</em>'],
+      ['Dibuja conexiones entre conceptos','¿Puede un deepfake ser a la vez desinformación? ¿Puede el clickbait ser misinformación en algunos casos? Las relaciones revelan que el mundo digital no es blanco o negro.'],
+      ['Reflexión final','¿Hay algún término para el que no encontrabas ejemplo? Si no lo ves, quizás es porque todavía no sabes reconocerlo.']
+    ],
+    placeholder:'Término 1: FAKE NEWS\nDefinición: ...\nEjemplo propio: ...\n\nTérmino 2: DESINFORMACIÓN\nDefinición: ...\nEjemplo propio: ...\n\n(Continúa con los 8 términos)\n\nConexiones que has encontrado entre conceptos: ...',
+    rows:9
+  },
+  {
+    id:2, color:'c-grn',
+    title:'Sala de urgencias: autopsia de un bulo de WhatsApp',
+    hook:'"El mensaje lleva dos semanas circulando en grupos de padres y madres. ¿Cómo lo desmontamos antes de que cause daño real?"',
+    tags:['Analítica','Parejas'],
+    pts:'1 punto',
+    desc:`Lee este mensaje de cadena:<span class="qblock" style="border-color:var(--grn)">🚨 URGENTE 🚨 El gobierno va a cobrar 5€ por cada mensaje de WhatsApp a partir del 1 de enero. Reenvía esto a 10 contactos antes de medianoche para que tu cuenta quede exenta. FUENTE: Créeme bro.</span>Identifica los 3 elementos que lo delatan, explica por qué cada uno es una señal de alarma y propón qué harías para detener su difusión.`,
+    steps:[
+      ['Lee el mensaje dos veces','La primera como cualquier usuario (¿qué sientes?). La segunda con ojos de detective: ¿qué está haciendo ese texto para que lo reenvíes sin pensar?'],
+      ['Busca las 3 grandes señales','Fíjate en el uso de MAYÚSCULAS y urgencia, en la petición de reenvío masivo, y en la "fuente". Pregúntate: ¿una noticia real necesita que tú la distribuyas para ser válida?'],
+      ['Pregunta clave sobre la lógica interna','¿Cómo podría el gobierno cobrar técnicamente por mensaje? ¿Tiene sentido que una exención fiscal dependa de cuántos contactos tienes? Cuando algo no tiene lógica interna, es una señal fuerte.'],
+      ['Piensa en el daño real','Si tu abuela recibe esto, ¿qué haría? Los bulos no son inofensivos aunque parezcan tontos. ¿Qué consecuencias concretas puede tener que miles de personas lo crean?'],
+      ['Propón un freno concreto','¿Responderías en el grupo? ¿Compartirías el enlace de Maldita.es? ¿Hablarías en privado con quien lo envió? Cada estrategia tiene pros y contras. Razona tu elección.']
+    ],
+    placeholder:'1ª señal: ...\nPor qué es una alarma: ...\n\n2ª señal: ...\nPor qué es una alarma: ...\n\n3ª señal: ...\nPor qué es una alarma: ...\n\nPropuesta para frenar su difusión: ...',
+    rows:8
+  },
+  {
+    id:3, color:'c-cor',
+    title:'La fábrica de emociones: construye (y destruye) un titular',
+    hook:'"Vas a ponerte en la piel de quien crea desinformación para entender exactamente cómo te manipula. Solo así podrás resistirte."',
+    tags:['Creativa','Grupos de 3-4'],
+    pts:'1 punto',
+    desc:`Titular neutro de partida: <span class="qblock" style="border-color:var(--cor)">"Un colegio de Madrid cambia el horario del recreo."</span><strong>Fase 1:</strong> Transfórmalo en 3 versiones clickbait: una para indignación, una para miedo y una para sorpresa.<br><br><strong>Fase 2:</strong> Intercambia con otro grupo. Analiza sus titulares: ¿qué emoción usó cada uno y por qué funcionaría (o no) en redes?`,
+    steps:[
+      ['Piensa como un diseñador de emociones','¿Qué haría que alguien al ver este titular se sintiese tan enfadado, asustado o sorprendido que no pudiera evitar hacer clic? Esa pregunta es el motor de toda la desinformación emocional.'],
+      ['Para INDIGNACIÓN','Añade a quién se está haciendo daño o qué injusticia se comete. Las palabras "prohíben", "obligan" o "contra los niños" suelen dispararla. <em>¿Por qué la indignación se viraliza tan fácil?</em>'],
+      ['Para MIEDO','Introduce una amenaza vaga o exagerada. El miedo funciona mejor cuando es difuso ("podría afectar a tu hijo") que concreto. <em>¿Por qué el cerebro reacciona más rápido ante el miedo que ante la alegría?</em>'],
+      ['Para SORPRESA','Exagera lo insólito. "Nadie se lo esperaba", "lo que nadie te cuenta". La sorpresa baja la guardia crítica porque nos hace sentir que vemos algo que los demás ocultan.'],
+      ['Reflexión metacognitiva (lo más importante)','Al recibir los titulares del otro grupo, hazte esta pregunta honesta: ¿alguno te ha hecho sentir algo, aunque sea levemente? ¿Qué dice eso sobre cómo funciona tu propio cerebro?']
+    ],
+    placeholder:'FASE 1 — Mis titulares:\nIndignación: ...\nMiedo: ...\nSorpresa: ...\n\nFASE 2 — Análisis de los titulares del otro grupo:\nTitular 1: emoción usada / por qué funcionaría o no...\nTitular 2: ...\nTitular 3: ...\n\nReflexión personal: cuando leí los titulares del otro grupo, sentí...',
+    rows:10
+  },
+  {
+    id:4, color:'c-amb',
+    title:'Operación Foto Falsa: verificación de imágenes en vivo',
+    hook:'"Esta foto del tiburón en la calle inundada lleva 12 años circulando cada vez que hay una DANA. Te enseñaré a descubrirlo en 90 segundos."',
+    tags:['Instrumental','Individual · móvil u ordenador'],
+    pts:'1 punto',
+    desc:`Tu docente te facilitará 3 imágenes que han circulado en redes: una real y bien contextualizada, una real pero sacada de contexto, y una generada por inteligencia artificial. Usa <strong>Google Lens</strong> o <strong>TinEye</strong> para verificar cada una y emite un veredicto razonado documentando los pasos que seguiste.`,
+    steps:[
+      ['Antes de buscar, observa 30 segundos','¿Hay algo que llame tu atención? Ropa, carteles, coches, idioma de los textos, calidad. Todo puede darte pistas antes de buscar.'],
+      ['Búsqueda inversa con Google Lens','En el móvil: mantén pulsada la imagen → "Buscar con Google Lens". En ordenador: images.google.com y arrastra la imagen. <em>¿Aparecen resultados de fechas o contextos completamente distintos?</em>'],
+      ['Lee las fechas de los primeros resultados','Si la imagen aparece datada años antes del evento que supuestamente muestra, es descontextualizada. Anota la fecha más antigua y el contexto original.'],
+      ['Para detectar IA generativa, amplía al máximo','Busca: dedos con número incorrecto, texto ilegible dentro de la imagen, fondos que se "disuelven", simetría facial demasiado perfecta, iluminación incoherente entre figura y fondo.'],
+      ['Escribe el veredicto con pruebas concretas','No basta con "es falsa". Di exactamente por qué: "la imagen original es de X fecha, publicada en X contexto, usada falsamente para ilustrar Y". La evidencia concreta es lo que convence.']
+    ],
+    placeholder:'IMAGEN 1:\nPasos seguidos: ...\nVeredicto: [real / descontextualizada / generada por IA]\nPruebas encontradas: ...\n\nIMAGEN 2:\nPasos seguidos: ...\nVeredicto: ...\nPruebas encontradas: ...\n\nIMAGEN 3:\nPasos seguidos: ...\nVeredicto: ...\nPruebas encontradas: ...',
+    rows:11
+  },
+  {
+    id:5, color:'c-tel',
+    title:'CSI de URLs: el rastro que dejan las webs falsas',
+    hook:'"Parece El País, pero no lo es. Un solo guion en la URL puede costarte tu contraseña o tu dinero."',
+    tags:['Instrumental','Individual'],
+    pts:'1 punto',
+    desc:`Clasifica estas 5 URLs como fiables o sospechosas y argumenta tu decisión:<span class="cblock" style="border-color:var(--tel)">A) https://www.elpais.com/sociedad\nB) https://www.elpais-noticias-reales.com.co/urgente\nC) https://amaz0n-ofertas.net/login\nD) https://maldita.es/malditabulo\nE) https://gobierno-españa-ayudas.blogspot.com</span>Además, usa <strong>Fakespot</strong> o <strong>ReviewMeta</strong> para analizar las reseñas de un producto en Amazon y describe lo que encuentras.`,
+    steps:[
+      ['Lee la URL de izquierda a derecha, evalúala de derecha a izquierda','El dominio real es la parte justo antes del primer "/" y después del último punto significativo. En "elpais-noticias-reales.com.co", el dominio real no es "elpais": es "com.co".'],
+      ['Señales de alerta','Guiones en nombre de marca, extensiones inusuales (.co, .tk, .xyz), sustitución de letras por números (amaz0n), o blogs gratuitos (blogspot) haciéndose pasar por instituciones.'],
+      ['Dentro de la web (solo en las que parezcan seguras)','Busca "Aviso Legal", "Quiénes somos" y "Política de privacidad". Su ausencia es muy sospechosa. Revelan si hay una persona real responsable.'],
+      ['Conexión con tu vida cotidiana','¿Alguna vez has comprado algo en una URL que ahora reconocerías como sospechosa? Las estafas de phishing usan exactamente estas técnicas.'],
+      ['Con Fakespot o ReviewMeta','¿Hay reseñas de cuentas creadas el mismo día? ¿Todas ponen 5 estrellas con frases muy similares? Las fake reviews son desinformación comercial cotidiana.']
+    ],
+    placeholder:'URL A: fiable/sospechosa — por qué: ...\nURL B: fiable/sospechosa — por qué: ...\nURL C: fiable/sospechosa — por qué: ...\nURL D: fiable/sospechosa — por qué: ...\nURL E: fiable/sospechosa — por qué: ...\n\nAnálisis de fake reviews:\nProducto analizado: ...\nPatrones detectados: ...',
+    rows:9
+  },
+  {
+    id:6, color:'c-pur',
+    title:'Periodistas de guardia: investigación con fact-checkers reales',
+    hook:'"Hay personas cuyo trabajo es perseguir mentiras todo el día. Hoy vas a hacer su trabajo durante 20 minutos."',
+    tags:['Analítica','Creativa','Individual'],
+    pts:'1 punto',
+    desc:`Entra en <strong>Maldita.es</strong>, <strong>Newtral.es</strong> o <strong>EFE Verifica</strong> y elige un bulo verificado de las últimas semanas que te resulte relevante. Investígalo y redacta una ficha de desmentido de ~150 palabras con las 4 partes obligatorias: qué dice el bulo / qué dice la realidad / fuentes / por qué se difundió.`,
+    steps:[
+      ['Elige el bulo con criterio','Busca uno que te afecte directamente o que hayas visto en tu entorno (salud, educación, tecnología). <em>¿Por qué crees que ese bulo concreto ha tenido éxito?</em> La respuesta ya es parte del aprendizaje.'],
+      ['Lee el desmentido del periodista, luego tápalo','Intenta reconstruir por tu cuenta cómo llegó a esa conclusión. ¿Qué fuentes oficiales consultaría? Este ejercicio entrena el pensamiento de verificación, no solo la lectura.'],
+      ['Identifica el tipo de fuentes usadas','¿Son primarias (el propio organismo oficial, el estudio científico) o secundarias (otro medio que cita a alguien)? Los fact-checkers siempre van a la fuente original.'],
+      ['Estructura tu ficha con las 4 partes','Qué dice el bulo / qué dice la realidad / fuentes que lo demuestran / por qué se difundió. Sin la cuarta parte no entendemos el fenómeno, solo el caso concreto.'],
+      ['Reflexiona sobre el veredicto','Los fact-checkers no dicen solo FALSO o VERDADERO. A veces dicen "engañoso" o "sin pruebas suficientes". ¿Por qué esa precisión en el lenguaje importa?']
+    ],
+    placeholder:'Fuente consultada (Maldita.es / Newtral / EFE Verifica): ...\nEnlace al bulo verificado: ...\n\nQUÉ DICE EL BULO: ...\n\nQUÉ DICE LA REALIDAD: ...\n\nFUENTES QUE LO DEMUESTRAN: ...\n\nPOR QUÉ CREES QUE SE DIFUNDIÓ: ...',
+    rows:10
+  },
+  {
+    id:7, color:'c-pnk',
+    title:'Mi burbuja vs. tu burbuja: experimento de algoritmos',
+    hook:'"Carlos y tú buscáis lo mismo en Google y os salen resultados distintos. El algoritmo os conoce mejor de lo que creéis."',
+    tags:['Analítica','Emocional','Parejas'],
+    pts:'1 punto',
+    desc:`Con tu pareja, buscad el mismo término (cambio climático, vacunas o uno acordado con el docente) desde vuestras cuentas reales en Google e Instagram al mismo tiempo. Comparad los primeros resultados y responded: ¿qué dice vuestra burbuja de filtros sobre cada uno de vosotros?`,
+    steps:[
+      ['Buscad al mismo tiempo, sin cerrar sesión','Los resultados personalizados son exactamente lo que queremos ver. ¿Os ha sorprendido que salga algo diferente para la misma búsqueda?'],
+      ['Comparad los primeros 5 resultados de cada uno','¿Son las mismas fuentes? ¿Tienen el mismo punto de vista? ¿Uno ve más contenido científico y el otro más contenido crítico? Anotad las diferencias más llamativas.'],
+      ['Pregunta difícil','¿Qué has hecho tú en internet para que el algoritmo te muestre ese tipo de contenido? ¿Qué canales sigues, qué vídeos ves hasta el final? El algoritmo no inventa tu burbuja: la construye con tus propias acciones.'],
+      ['Reflexionad sobre el peligro concreto','Si alguien solo ve durante meses un único punto de vista sobre un tema importante, ¿cómo afecta eso a su capacidad de dialogar con personas que piensan distinto?'],
+      ['Proponed una estrategia real para escapar','Seguir cuentas con puntos de vista distintos, buscar en modo incógnito, usar DuckDuckGo. ¿Qué haréis vosotros concretamente a partir de hoy?']
+    ],
+    placeholder:'Término buscado: ...\n\nMis primeros 5 resultados (fuentes y enfoque): ...\n\nLos 5 resultados de mi pareja: ...\n\nDiferencias más llamativas: ...\n\nQué dice mi burbuja sobre mí: ...\n\nEstrategia concreta para escapar de mi burbuja: ...',
+    rows:9
+  },
+  {
+    id:8, color:'c-blue',
+    title:'Detective de la IA: ¿humano o máquina?',
+    hook:'"Con IA, cualquiera puede fabricar la \'prueba\' de cualquier cosa. ¿Sabes detectarla?"',
+    tags:['Instrumental','Creativa','Individual'],
+    pts:'1 punto',
+    desc:`Tu docente te facilitará una galería de 6 imágenes (mezcla de fotos reales y generadas con IA). Clasifica cada una como REAL o IA GENERATIVA justificando los artefactos visuales que detectas. Al terminar, escribe tu propio protocolo personal de 3 pasos.`,
+    steps:[
+      ['Primera impresión vs. inspección detallada','Mira cada imagen 5 segundos y apunta tu intuición. Luego amplíala al máximo. ¿Ha cambiado tu percepción? Esto entrena a no fiarse del primer vistazo.'],
+      ['Los 5 puntos débiles de la IA generativa','Manos (dedos de más o menos), texto dentro de la imagen (letras distorsionadas), fondos (objetos que se deshacen), iluminación incoherente, accesorios que no cuadran.'],
+      ['Busca también lo que falta','Las fotos reales tienen imperfecciones (ruido, reflejos). Las imágenes de IA tienen una "perfección extraña" en la piel o el pelo que resulta levemente inquietante.'],
+      ['Considera el contexto','¿Tiene sentido que exista esa fotografía si el evento fuera real? Un contexto implausible (reunión privada, catástrofe sin fotógrafos) es otra señal importante.'],
+      ['Crea tu protocolo propio','No copies uno de internet. Piensa en los 3 pasos que TÚ seguirías. Un protocolo propio es mucho más fácil de recordar y aplicar en el futuro.']
+    ],
+    placeholder:'Imagen 1: REAL/IA — artefactos detectados: ...\nImagen 2: REAL/IA — artefactos detectados: ...\nImagen 3: REAL/IA — artefactos detectados: ...\nImagen 4: REAL/IA — artefactos detectados: ...\nImagen 5: REAL/IA — artefactos detectados: ...\nImagen 6: REAL/IA — artefactos detectados: ...\n\nMI PROTOCOLO PERSONAL:\nPaso 1: ...\nPaso 2: ...\nPaso 3: ...',
+    rows:11
+  },
+  {
+    id:9, color:'c-amb',
+    title:'El tribunal de las 5W+2H: juzga estas noticias',
+    hook:'"\'Descubren la cura definitiva contra el acné, pero las farmacéuticas la ocultan\'. 47 palabras, cero datos. Vamos a destrozarla."',
+    tags:['Analítica','Individual + debate'],
+    pts:'1 punto',
+    desc:`Aplica el filtro de las <strong>5W + 2H</strong> a estos titulares:<span class="qblock" style="border-color:var(--amb);line-height:2.2">1. «Descubren la cura definitiva contra el acné, pero las farmacéuticas la ocultan»<br>2. «El nuevo plan educativo eliminará el recreo en todos los colegios de España»<br>3. «Una IA desarrollada en secreto ya toma decisiones importantes sobre tu vida»</span>Para cada uno: preguntas sin responder, nivel de sospecha 1-5 justificado, y qué necesitarías para creerlo.`,
+    steps:[
+      ['Las 7 preguntas son tu escáner','Who (¿quién lo descubrió?), What (¿qué exactamente?), When (¿cuándo?), Where (¿dónde, en qué institución?), Why (¿por qué ahora?), How (¿cómo se llegó a esa conclusión?), How much (¿cuántos casos, qué evidencia?).'],
+      ['Ojo con la lógica conspiranoica','Los titulares 1 y 3 usan la estructura: "existe algo maravilloso/terrible, PERO alguien poderoso lo oculta". Eso hace imposible la refutación: si no hay pruebas, "es porque las ocultan". ¿Por qué eso es un problema lógico grave?'],
+      ['El nivel de sospecha NO es binario','Usa la escala del 1 (sin indicios claros) al 5 (casi con certeza engañoso). Justifica con al menos dos razones. Esto evita el error de llamar "fake news" a todo lo que no nos gusta.'],
+      ['Define qué necesitarías para creerlo','No se trata de rechazar todo, sino de saber qué evidencia cambiaría tu opinión. Un estudio revisado por pares, una fuente oficial con metodología explicada. Eso es pensamiento científico.'],
+      ['En el debate, escucha activamente','Si alguien pone un nivel de sospecha distinto al tuyo, primero pregúntate: ¿qué ha visto él que yo no he visto? El desacuerdo razonado es cómo funciona el pensamiento crítico colectivo.']
+    ],
+    placeholder:'TITULAR 1 (acné):\nPreguntas sin responder: ...\nNivel de sospecha (1-5): ... — por qué: ...\nQué necesitaría para creerlo: ...\n\nTITULAR 2 (recreo):\nPreguntas sin responder: ...\nNivel de sospecha (1-5): ...\nQué necesitaría para creerlo: ...\n\nTITULAR 3 (IA secreta):\nPreguntas sin responder: ...\nNivel de sospecha (1-5): ...\nQué necesitaría para creerlo: ...',
+    rows:12
+  },
+  {
+    id:10, color:'c-grn',
+    title:'Misión contrabulo: crea y presenta una contranarrativa',
+    hook:'"No basta con saber que algo es mentira. Para cambiar el mundo necesitas construir la verdad de forma que llegue a más gente que el bulo."',
+    tags:['Creativa','Ciudadana','Grupos de 3-4 · presentación'],
+    pts:'1 punto',
+    desc:`En grupos, elegid un bulo real de vuestro entorno. Desmontatdlo con fuentes verificadas y producid una contranarrativa en el formato que elijáis (hilo de Instagram/X, guion TikTok, infografía o tarjeta para WhatsApp). Presentadlo a la clase argumentando por qué vuestro formato es el más efectivo para ese bulo concreto.`,
+    steps:[
+      ['Elegid el bulo con estrategia','El mejor bulo para trabajar no es el más impactante, sino el más cercano a vuestro entorno real. La cercanía da autenticidad y motivación real al trabajo.'],
+      ['Verificad primero, producid después','Comprobad el bulo con al menos dos fuentes independientes. Sin verificación sólida, vuestra contranarrativa no tiene credibilidad.'],
+      ['Elegid el formato pensando en la audiencia','¿A quién va dirigida? Un hilo de X no llega a la misma gente que una tarjeta para WhatsApp. El formato óptimo depende del público que comparte ese bulo concreto.'],
+      ['La contranarrativa debe competir emocionalmente','Si el bulo usa miedo, vuestra respuesta no puede ser solo datos fríos. Usad un tono cercano o un elemento visual llamativo. La verdad también tiene que ser atractiva.'],
+      ['Preparad el argumento para la presentación','Si alguien que cree el bulo ve vuestra contranarrativa, ¿por qué cambiaría de opinión? ¿Qué elemento tiene más poder de persuasión? Defender esa decisión es comunicación real.']
+    ],
+    placeholder:'BULO ELEGIDO: ...\nDónde circuló: ...\n\nVERIFICACIÓN:\nFuente 1 que lo desmiente: ...\nFuente 2 que lo desmiente: ...\nDato clave que lo refuta: ...\n\nFORMATO ELEGIDO: ...\nPOR QUÉ es el más efectivo para este bulo y esta audiencia: ...\nAUDIENCIA a la que va dirigida: ...\n\nBORRADOR del contenido: ...',
+    rows:12
+  }
+];
+
+/* ════════════════════════════════════════════
+   PROMPTS DE FEEDBACK
+════════════════════════════════════════════ */
+const FB_FORMATIVO = {
+1:`Eres un docente experto en alfabetización mediática evaluando a un alumno de 3º ESO (14-15 años). El ejercicio era definir con sus propias palabras 8 términos (fake news, desinformación, misinformación, malinformación, clickbait, deepfake, sesgo de confirmación, fake reviews) y aportar un ejemplo real propio para cada uno.
+
+RESPUESTA DEL ALUMNO:
+{R}
+
+DA FEEDBACK FORMATIVO (nunca des la respuesta directamente):
+• Señala 2-3 aspectos a mejorar usando preguntas que activen la reflexión.
+• Si falta un término o está confuso, pregunta: "¿qué crees que distingue a X de Y?"
+• Si los ejemplos son genéricos, pregunta: "¿puedes pensar en algo que hayas visto TÚ esta semana?"
+• Si confunde intención con error, pregunta: "¿crees que quien lo compartió quería engañar, o simplemente se equivocó?"
+• Destaca específicamente algo que ha hecho bien.
+• Tono cercano, de tutor, nunca condescendiente. Tutea.
+• Máximo 140 palabras. Termina con UNA sola pregunta de reflexión.`,
+
+2:`Eres un docente experto evaluando a un alumno de 3º ESO. El ejercicio era analizar el bulo "URGENTE El gobierno va a cobrar 5€ por cada mensaje de WhatsApp. Reenvía a 10 contactos antes de medianoche para quedar exento. Fuente: Créeme bro." e identificar 3 señales de alarma con su mecanismo psicológico, y proponer una estrategia de freno.
+
+Las 3 señales clave son: urgencia artificial (MAYÚSCULAS, emojis), llamada al reenvío masivo como validación, y fuente anónima/inexistente.
+
+RESPUESTA DEL ALUMNO:
+{R}
+
+DA FEEDBACK FORMATIVO:
+• Confirma qué señales ha identificado y con qué profundidad.
+• Si ha identificado la señal pero no el MECANISMO psicológico, pregunta: "¿por qué crees que ese elemento hace que la gente lo reenvíe sin pensar?"
+• Si la propuesta de freno es vaga, pregunta: "¿cómo se lo dirías exactamente para que no se ponga a la defensiva?"
+• Nunca des la respuesta. Máximo 140 palabras. Termina con UNA pregunta.`,
+
+3:`Eres un docente experto evaluando a un alumno de 3º ESO. El ejercicio tenía dos fases: crear 3 titulares clickbait (indignación, miedo, sorpresa) a partir de un titular neutro, y analizar los titulares del grupo compañero.
+
+RESPUESTA DEL ALUMNO:
+{R}
+
+DA FEEDBACK FORMATIVO:
+• Evalúa si los titulares realmente activan la emoción indicada. Si uno sigue siendo neutro, pregunta: "¿qué palabra cambiarías para que el lector sienta X en el momento de leerlo?"
+• Verifica si el análisis de la Fase 2 explica el mecanismo (por qué esa emoción viraliza) o solo nombra la emoción.
+• Lo más importante: la reflexión metacognitiva. Si está ausente, pregunta: "¿alguno de los titulares, aunque fuera el tuyo, te generó una pequeña reacción? ¿Qué dice eso?"
+• Nunca completes los titulares por el alumno. Máximo 140 palabras. Termina con UNA pregunta.`,
+
+4:`Eres un docente experto evaluando a un alumno de 3º ESO en verificación de imágenes con Google Lens/TinEye. Debía verificar 3 imágenes (real, descontextualizada, generada por IA) documentando pasos y veredicto con pruebas.
+
+RESPUESTA DEL ALUMNO:
+{R}
+
+DA FEEDBACK FORMATIVO:
+• Verifica si ha documentado el PROCESO además del resultado. Si solo da el veredicto, pregunta: "¿cómo llegaste a esa conclusión? ¿Qué encontraste al buscar?"
+• Para la imagen de IA: si es vago ("parece falsa"), pregunta: "¿en qué parte exacta de la imagen lo notaste?"
+• Si el veredicto carece de evidencia concreta, pregunta: "¿qué dato concreto encontraste que convencería a otra persona?"
+• Máximo 140 palabras. Termina con UNA pregunta.`,
+
+5:`Eres un docente experto evaluando a un alumno de 3º ESO en análisis de URLs y fake reviews. Las URLs correctas: A fiable, B sospechosa (dominio falso), C sospechosa (letra sustituida), D fiable, E sospechosa (blogspot institucional).
+
+RESPUESTA DEL ALUMNO:
+{R}
+
+DA FEEDBACK FORMATIVO:
+• Si alguna URL está mal clasificada, NO des la respuesta. Pregunta: "¿qué parte concreta de esa URL te ha dado confianza?"
+• Si la argumentación es solo intuición, pregunta: "¿puedes señalar exactamente qué carácter o parte de la URL te ha hecho sospechar?"
+• Para fake reviews: si solo da el porcentaje, pregunta: "¿qué patrón concreto encontraste en las reseñas que te hizo sospechar?"
+• Máximo 140 palabras. Termina con UNA pregunta.`,
+
+6:`Eres un docente experto evaluando a un alumno de 3º ESO en investigación con fact-checkers. Debía escribir una ficha de desmentido de ~150 palabras con 4 partes: qué dice el bulo / qué dice la realidad / fuentes / por qué se difundió.
+
+RESPUESTA DEL ALUMNO:
+{R}
+
+DA FEEDBACK FORMATIVO:
+• Verifica si están las 4 partes. La más frecuentemente ausente es "por qué se difundió". Si falta, pregunta: "¿qué necesidad o emoción crees que satisface ese bulo en quien lo comparte?"
+• Si las fuentes son solo secundarias, pregunta: "¿podrías encontrar la fuente original que cita el fact-checker?"
+• Si el alumno copia el veredicto sin reflexión, pregunta: "¿por qué el periodista eligió 'engañoso' y no 'falso'?"
+• Máximo 140 palabras. Termina con UNA pregunta.`,
+
+7:`Eres un docente experto evaluando a un alumno de 3º ESO sobre burbujas de filtros. Debía comparar resultados de búsqueda reales con su pareja y reflexionar sobre su propia burbuja y una estrategia de escape.
+
+RESPUESTA DEL ALUMNO:
+{R}
+
+DA FEEDBACK FORMATIVO:
+• La reflexión más importante es "qué dice mi burbuja sobre mí". Si es superficial, pregunta: "¿cuándo fue la última vez que el algoritmo te mostró algo que contradijera tus ideas?"
+• Si la estrategia de escape es genérica, pregunta: "¿puedes nombrar una cuenta, un medio o un tipo de contenido concreto que seguirías para romper tu burbuja?"
+• Si no analiza el peligro democrático, pregunta: "¿cómo afectaría al debate público si millones tuvieran burbujas completamente distintas sobre el mismo tema?"
+• Máximo 140 palabras. Termina con UNA pregunta.`,
+
+8:`Eres un docente experto evaluando a un alumno de 3º ESO en detección de imágenes generadas por IA. Debía clasificar 6 imágenes, justificar artefactos visuales, y crear su propio protocolo de 3 pasos.
+
+RESPUESTA DEL ALUMNO:
+{R}
+
+DA FEEDBACK FORMATIVO:
+• Si las justificaciones son vagas ("parece artificial"), pregunta: "¿en qué parte exacta de la imagen lo notaste? ¿Puedes describir el detalle?"
+• El protocolo propio es lo más valioso. Si es genérico o copiado, pregunta: "¿cuál es el paso que TÚ harías primero, basándote en lo que más te ha costado detectar hoy?"
+• Si no menciona el contexto, pregunta: "¿hay alguna imagen en la que los detalles visuales fueran difíciles de ver pero el contexto ya te pareciera imposible?"
+• Máximo 140 palabras. Termina con UNA pregunta.`,
+
+9:`Eres un docente experto evaluando a un alumno de 3º ESO aplicando 5W+2H a 3 titulares: 1) cura acné oculta por farmacéuticas, 2) plan educativo elimina recreo, 3) IA secreta toma decisiones sobre tu vida.
+
+RESPUESTA DEL ALUMNO:
+{R}
+
+DA FEEDBACK FORMATIVO:
+• Si las preguntas se repiten en la misma dimensión, pregunta: "¿qué preguntarías sobre CÓMO se llegó a esa conclusión, o CUÁNTOS casos se han estudiado?"
+• Para los titulares 1 y 3: si no ha detectado la estructura conspiranoica, pregunta: "¿cómo podrías demostrar que algo NO existe si alguien siempre puede responder 'es que lo ocultan'?"
+• Si los niveles de sospecha no están justificados, pregunta: "¿qué te ha llevado a dar ese número y no uno más alto o más bajo?"
+• Máximo 140 palabras. Termina con UNA pregunta.`,
+
+10:`Eres un docente experto evaluando la planificación de un grupo de 3º ESO para crear una contranarrativa. Debían elegir un bulo, verificarlo con dos fuentes independientes, elegir un formato argumentado para una audiencia, y diseñar contenido que compita emocionalmente con el bulo.
+
+RESPUESTA DEL ALUMNO/GRUPO:
+{R}
+
+DA FEEDBACK FORMATIVO:
+• Si el formato no está argumentado en relación al bulo y audiencia, pregunta: "¿por qué ese formato llega mejor a las personas que YA creen ese bulo específico?"
+• Si la contranarrativa es solo datos sin elemento emocional, pregunta: "¿cómo podrías añadir una historia real o un elemento visual que genere curiosidad en lugar de rechazo?"
+• Si las dos fuentes no son independientes entre sí, pregunta: "¿por qué es importante que las fuentes sean de medios distintos entre sí?"
+• Máximo 140 palabras. Termina con UNA pregunta que prepare al grupo para la presentación oral.`
+};
+
+const FB_EXPLICITO = {
+1:`Eres un docente experto en alfabetización mediática. El alumno de 3º ESO ya ha recibido feedback formativo y necesita orientación directa sobre qué debe incluir su respuesta. La respuesta óptima a este ejercicio debe contener EXACTAMENTE estos elementos para cada uno de los 8 términos:
+
+1. Una definición propia con palabras sencillas (no copiada) que incluya el elemento clave que distingue ese término de los demás — la INTENCIÓN es el eje: desinformación = intención de engañar; misinformación = error sin mala intención; malinformación = datos reales usados para dañar; fake news = noticias fabricadas; clickbait = titular engañoso para generar clics; deepfake = contenido audiovisual manipulado con IA; sesgo de confirmación = tendencia a creer solo lo que ya pensamos; fake reviews = reseñas falsas para manipular decisiones de compra.
+2. Un ejemplo real y concreto propio (no genérico), situado en un contexto real: un mensaje de WhatsApp recibido, un vídeo de TikTok, una noticia vista esa semana.
+3. Al menos 2 conexiones entre conceptos diferentes (p. ej. "un deepfake puede ser un instrumento de desinformación", "el clickbait activa el sesgo de confirmación").
+
+Revisa la respuesta del alumno: {R}
+
+Dile directamente qué elementos le faltan por término, cuáles están bien y cuáles son demasiado vagos. Sé concreto. Máximo 200 palabras.`,
+
+2:`Eres un docente experto. El alumno de 3º ESO necesita orientación directa sobre qué debe incluir su respuesta óptima. Esta es la estructura completa que debe tener:
+
+SEÑAL 1 — Urgencia artificial: identificar las MAYÚSCULAS, el emoji 🚨 y la palabra URGENTE. Explicar el mecanismo: la urgencia desactiva el pensamiento crítico porque el cerebro en modo alerta prioriza la acción sobre la reflexión. Quien lo diseña sabe que si hay tiempo para pensar, hay tiempo para dudar.
+
+SEÑAL 2 — Llamada al reenvío masivo como validación: "reenvía a 10 contactos" no es una instrucción neutral, es el mecanismo de distribución disfrazado de condición de exención. Una noticia real no necesita que tú la distribuyas para ser válida. El reenvío crea la ilusión de que la información existe porque la gente la comparte.
+
+SEÑAL 3 — Fuente inexistente o anónima: "Créeme bro" no es una fuente. Una fuente legítima tiene nombre, institución y es verificable. La ausencia de fuente es la señal más básica y más ignorada.
+
+PROPUESTA DE FRENO: debe incluir una acción concreta (buscar en Maldita.es y compartir el enlace en el grupo, o responder en privado con empatía, no con agresividad).
+
+Revisa la respuesta del alumno: {R}
+
+Dile exactamente qué elementos le faltan o están incompletos. Máximo 200 palabras.`,
+
+3:`Eres un docente experto. El alumno necesita orientación directa sobre qué debe incluir su respuesta óptima en este ejercicio.
+
+FASE 1 — Los 3 titulares deben cumplir estos criterios:
+• Indignación: debe contener una víctima identificable (niños, familias, trabajadores), un actor que daña ("obligan", "prohíben", "quitan"), y lenguaje de injusticia. El lector debe sentir que hay que hacer algo.
+• Miedo: debe contener una amenaza difusa dirigida al lector o a alguien cercano ("podría afectar a tu hijo", "sin que lo sepas"), sin especificar exactamente el daño. La vaguedad amplifica el miedo.
+• Sorpresa: debe usar fórmulas de revelación ("lo que nadie te cuenta", "la verdad que ocultan") y presentar algo como insólito aunque sea banal. El lector siente que accede a información privilegiada.
+
+FASE 2 — El análisis de cada titular del otro grupo debe incluir: nombre de la emoción activada + explicación del mecanismo concreto (por qué esa emoción hace que la gente comparta sin pensar) + valoración de si el titular funcionaría en redes y por qué.
+
+REFLEXIÓN FINAL: debe ser personal y honesta, no teórica. "Sentí X al leer el titular Y porque..."
+
+Revisa la respuesta del alumno: {R}
+
+Dile directamente qué le falta en cada parte. Máximo 200 palabras.`,
+
+4:`Eres un docente experto. El alumno necesita orientación directa sobre qué debe incluir la respuesta óptima en verificación de imágenes.
+
+Para CADA UNA de las 3 imágenes, la respuesta óptima debe incluir estos 4 elementos:
+1. PROCESO documentado paso a paso: qué herramienta usó (Google Lens / TinEye), cómo la aplicó (mantener pulsada la imagen, arrastrarla al buscador...) y qué encontró en los primeros resultados.
+2. VEREDICTO claro: real y contextualizada / real pero descontextualizada / generada por IA.
+3. EVIDENCIA concreta:
+   — Si es descontextualizada: fecha de la publicación original más antigua encontrada + contexto real de la imagen (dónde y cuándo se tomó originalmente).
+   — Si es IA generativa: nombre del artefacto visual detectado + su localización exacta en la imagen (p. ej. "la mano izquierda tiene 6 dedos", "el texto del cartel de fondo es ilegible", "el fondo se disuelve detrás del hombro derecho").
+4. POR QUÉ esa evidencia es convincente para otra persona (no solo para el alumno).
+
+Revisa la respuesta del alumno: {R}
+
+Dile exactamente qué elemento falta en cada imagen. Máximo 200 palabras.`,
+
+5:`Eres un docente experto. El alumno necesita orientación directa sobre qué debe incluir la respuesta óptima en análisis de URLs y fake reviews.
+
+CLASIFICACIÓN CORRECTA Y ARGUMENTACIÓN ÓPTIMA:
+• URL A (elpais.com/sociedad): FIABLE. El dominio es "elpais.com", reconocido y sin alteraciones. Extensión .com estándar para medios internacionales.
+• URL B (elpais-noticias-reales.com.co): SOSPECHOSA. El dominio real es "com.co" (Colombia), no "elpais". Los guiones y el texto "noticias-reales" son adiciones que intentan imitar al medio original pero delatan la suplantación. Técnica clásica de phishing de medios.
+• URL C (amaz0n-ofertas.net/login): SOSPECHOSA. La "0" (cero) sustituye a la "o" para evadir filtros, técnica llamada homoglífico. La extensión .net en lugar de .com, el guion, la palabra "ofertas" y el path /login son señales de robo de credenciales.
+• URL D (maldita.es/malditabulo): FIABLE. Dominio reconocido de agencia de fact-checking española con extensión .es estándar.
+• URL E (gobierno-españa-ayudas.blogspot.com): SOSPECHOSA. Blogspot.com es una plataforma gratuita de blogs. Ninguna institución gubernamental española usa blogspot para comunicaciones oficiales. El nombre intenta transmitir autoridad institucional que el dominio desmiente.
+
+FAKE REVIEWS — la respuesta óptima debe describir: el porcentaje de reseñas auténticas según la herramienta + al menos 2 patrones concretos detectados (cuentas creadas en fechas similares, frases repetidas, todas con 5 estrellas sin texto, compradores no verificados, etc.)
+
+Revisa la respuesta del alumno: {R}
+
+Dile qué clasificaciones están incorrectas o sin argumentar correctamente, y qué falta en el análisis de fake reviews. Máximo 200 palabras.`,
+
+6:`Eres un docente experto. El alumno necesita orientación directa sobre qué debe incluir la respuesta óptima en la ficha de desmentido.
+
+La ficha óptima tiene OBLIGATORIAMENTE estas 4 secciones con este nivel de detalle:
+
+1. QUÉ DICE EL BULO: descripción precisa del contenido del bulo tal como circula (no resumida vagamente), incluyendo el formato en que se difundió (mensaje de WhatsApp, vídeo de TikTok, titular de web...).
+
+2. QUÉ DICE LA REALIDAD: la información verificada que contradice o matiza el bulo, expresada con precisión. No vale "es falso": hay que explicar qué es lo que realmente ocurre o ha ocurrido.
+
+3. FUENTES QUE LO DEMUESTRAN: mínimo una fuente primaria (organismo oficial, estudio científico con enlace, declaración institucional verificable). No basta citar al fact-checker: hay que citar la fuente original que el fact-checker usa.
+
+4. POR QUÉ SE DIFUNDIÓ: análisis del mecanismo de viralización. Debe responder: ¿qué emoción activa? (miedo, indignación, esperanza falsa) + ¿a qué necesidad o creencia previa del receptor responde? + ¿por qué ese formato concreto facilita la difusión sin verificación?
+
+La sección 4 es la más frecuentemente ausente y la más valiosa pedagógicamente.
+
+Revisa la respuesta del alumno: {R}
+
+Dile directamente qué secciones están incompletas y qué nivel de detalle falta en cada una. Máximo 200 palabras.`,
+
+7:`Eres un docente experto. El alumno necesita orientación directa sobre qué debe incluir la respuesta óptima sobre burbujas de filtros.
+
+La respuesta óptima tiene estas partes con este nivel de concreción:
+
+COMPARACIÓN: lista de las fuentes o cuentas concretas que aparecieron en cada búsqueda, señalando la diferencia de enfoque (p. ej. "a mí me salieron: El País, Nature, NASA. A mi compañero: canal X de YouTube, web Y, influencer Z"). No vale decir solo "nos salieron cosas distintas".
+
+QUÉ DICE MI BURBUJA SOBRE MÍ: análisis honesto y específico que conecta acciones propias (canales seguidos, vídeos vistos hasta el final, búsquedas anteriores, tiempo dedicado a cada tipo de contenido) con el tipo de resultados recibidos. Debe ser en primera persona y concreto, no teórico.
+
+PELIGRO DEMOCRÁTICO: explicación de cómo la fragmentación informativa afecta al debate público y a la capacidad de consenso en una sociedad. Debe ir más allá del nivel personal.
+
+ESTRATEGIA DE ESCAPE: acción concreta y comprometida, no genérica. Debe incluir: qué cuenta, medio o tipo de contenido seguirá específicamente, con qué frecuencia, y cómo comprobará que su burbuja se está diversificando.
+
+Revisa la respuesta del alumno: {R}
+
+Dile directamente qué partes están superficiales o ausentes. Máximo 200 palabras.`,
+
+8:`Eres un docente experto. El alumno necesita orientación directa sobre qué debe incluir la respuesta óptima en detección de imágenes de IA.
+
+Para CADA imagen la justificación óptima debe contener:
+• Veredicto claro (REAL o IA GENERATIVA).
+• Nombre del artefacto detectado con su localización precisa en la imagen. No vale "parece rara" o "se ve artificial". Hay que decir: "la mano derecha tiene 7 dedos", "el texto del cartel de fondo es una mezcla de letras sin sentido", "el borde del pelo se funde con el fondo sin transición real", "la iluminación del rostro viene de la izquierda pero la sombra del cuerpo cae hacia la izquierda también".
+• Si es real y bien contextualizada: señalar por qué NO tiene los artefactos típicos de IA (qué imperfecciones reales se ven).
+
+El PROTOCOLO PERSONAL óptimo debe tener 3 pasos distintos en nivel de análisis:
+• Paso 1: observación rápida (primeros 5 segundos, ¿algo llama la atención?)
+• Paso 2: inspección técnica (ampliar y buscar en los 5 puntos débiles de la IA)
+• Paso 3: verificación de contexto (¿tiene sentido que exista esa foto si el evento fuera real?)
+
+Revisa la respuesta del alumno: {R}
+
+Dile exactamente qué artefactos no ha descrito con suficiente precisión y qué le falta en el protocolo. Máximo 200 palabras.`,
+
+9:`Eres un docente experto. El alumno necesita orientación directa sobre qué debe incluir la respuesta óptima al aplicar 5W+2H a los 3 titulares.
+
+Para CADA titular, la respuesta óptima incluye:
+
+1. PREGUNTAS SIN RESPONDER: mínimo 4 preguntas que cubran dimensiones distintas. Deben cubrir obligatoriamente How (¿cómo se llegó a esa conclusión? ¿qué metodología?) y How much (¿cuántos casos? ¿qué tamaño de muestra? ¿qué porcentaje?), que son las más frecuentemente olvidadas y las más reveladoras de pseudociencia.
+
+2. NIVEL DE SOSPECHA (1-5) con DOS razones concretas que lo justifiquen. Los titulares 1 y 3 merecen nivel 4-5 por su estructura conspiranoica ("alguien poderoso lo oculta"), que hace la afirmación infalsificable. El titular 2 merece nivel 3-4 porque es vago pero no contiene estructura conspiranoica.
+
+3. QUÉ NECESITARÍA PARA CREERLO: debe ser específico y verificable (p. ej. "un estudio publicado en una revista científica revisada por pares con más de 500 participantes y metodología doble ciego", no solo "una fuente fiable").
+
+Para los titulares 1 y 3: la respuesta óptima explica el problema lógico de la estructura conspiranoica: si la ausencia de pruebas se interpreta como prueba de ocultación, la afirmación nunca puede ser refutada, lo que la convierte en dogma, no en información.
+
+Revisa la respuesta del alumno: {R}
+
+Dile exactamente qué dimensiones de las 7 preguntas faltan y si los niveles de sospecha están bien justificados. Máximo 200 palabras.`,
+
+10:`Eres un docente experto. El grupo necesita orientación directa sobre qué debe incluir la respuesta óptima para la contranarrativa.
+
+La planificación óptima incluye estos elementos con este nivel de detalle:
+
+VERIFICACIÓN: dos fuentes independientes entre sí (de medios o instituciones distintas, no dos artículos del mismo periódico). Debe incluir el dato concreto y verificable que refuta el bulo, no solo el enlace.
+
+ELECCIÓN DE FORMATO — el argumento óptimo responde a tres preguntas: (1) ¿Qué formato usa el bulo original o el público que lo comparte? La contranarrativa debe estar en el mismo ecosistema. (2) ¿Cuál es la barrera de atención de esa audiencia? (3) ¿Qué elementos del formato elegido permiten transmitir la emoción además de los datos?
+
+AUDIENCIA: descripción específica (no "personas mayores" sino "adultos de 50-65 años en grupos de WhatsApp de vecinos o familia") que justifique el formato.
+
+CONTENIDO: debe incluir un elemento emocional o narrativo además de los datos. La contranarrativa que solo enumera hechos no compite con el bulo, que siempre tiene una historia.
+
+ARGUMENTO PARA LA PRESENTACIÓN: responder explícitamente a: "si alguien que cree el bulo ve esto, ¿por qué cambiaría de opinión?"
+
+Revisa la respuesta del grupo: {R}
+
+Dile directamente qué elementos están ausentes o insuficientemente desarrollados. Máximo 200 palabras.`
+};
+
+/* ════════════════════════════════════════════
+   PROMPTS DE RESUMEN PARA GOOGLE DOC
+════════════════════════════════════════════ */
+const SUM_PROMPT = `Eres un asistente que ayuda a un alumno de 3º ESO a preparar el resumen de su respuesta para entregar en Google Classroom. Con la respuesta del alumno y el feedback recibido, genera un resumen estructurado con este formato EXACTO (en castellano):
+
+━━━ RESPUESTA FINAL — Actividad {N}: {TITULO} ━━━
+
+{La respuesta del alumno, limpia y bien organizada, sin los borradores intermedios}
+
+━━━ Feedback recibido de la IA (2-3 puntos clave) ━━━
+• {Punto clave 1 del feedback}
+• {Punto clave 2 del feedback}
+• {Punto clave 3 del feedback si lo hay}
+
+━━━ Autoevaluación del alumno ━━━
+He mejorado en: {extrae de la respuesta qué ha mejorado el alumno respecto al borrador inicial}
+Aún podría mejorar: {señala honestamente 1 aspecto que sigue siendo mejorable}
+
+No añadas comentarios propios fuera de este formato. No pongas asteriscos ni markdown. Solo el texto limpio con los separadores ━━━.
+
+Respuesta del alumno: {R}
+Feedback recibido: {FB}`;
+
+/* ════════════════════════════════════════════
+   ESTADO GLOBAL
+════════════════════════════════════════════ */
+const state = {}; // state[n] = { feedback: '', explicito: '' }
+
+/* ════════════════════════════════════════════
+   RENDER
+════════════════════════════════════════════ */
+function renderAll() {
+  const main = document.getElementById('mainContent');
+  main.innerHTML = ACTS.map(a => renderAct(a)).join('');
+}
+
+function renderAct(a) {
+  const stepsHtml = a.steps.map((s,i) => `
+    <div class="g-step">
+      <div class="g-n">${i+1}</div>
+      <div class="g-txt"><strong>${s[0]}</strong>: ${s[1]}</div>
+    </div>`).join('');
+
+  const tagsHtml = a.tags.map(t => `<span class="tag tag-tipo">${t}</span>`).join('') +
+    `<span class="tag tag-pts">${a.pts}</span>`;
+
+  return `
+<div class="act ${a.color}" data-id="${a.id}">
+  <div class="act-hdr" onclick="toggleAct(${a.id})">
+    <div class="act-num"><span class="act-num-n">${a.id}</span><span class="act-done-mark">✓</span></div>
+    <div class="act-hdr-txt">
+      <div class="act-title">${a.title}</div>
+      <div class="act-hook">${a.hook}</div>
+      <div class="act-tags">${tagsHtml}</div>
+    </div>
+    <div class="act-arrow" id="arr${a.id}">▾</div>
+  </div>
+  <div class="act-body" id="body${a.id}">
+    <p class="act-desc">${a.desc}</p>
+    <div class="guid">
+      <div class="g-hdr">🧭 Guía paso a paso</div>
+      <div class="g-steps">${stepsHtml}</div>
+    </div>
+    <div class="draft">
+      <div class="draft-lbl">Tu borrador <span class="draft-note">— escribe aquí, pide feedback y mejora antes de generar el resumen</span></div>
+      <textarea id="ta${a.id}" placeholder="${a.placeholder}" rows="${a.rows}"></textarea>
+      <div class="btn-row">
+        <button class="btn-fb" id="fbBtn${a.id}" onclick="getFeedback(${a.id}, false)">🤖 Pedir feedback formativo</button>
+      </div>
+    </div>
+
+    <!-- Panel de feedback -->
+    <div class="fb-panel" id="fb${a.id}">
+      <div class="fb-hdr">
+        <div class="fb-hdr-left"><span>🤖</span> Feedback de la IA</div>
+      </div>
+      <div class="fb-body" id="fbBody${a.id}"></div>
+      <div class="fb-actions">
+        <button class="btn-explicit" id="expBtn${a.id}" onclick="getFeedback(${a.id}, true)">💡 Quiero orientación más explícita</button>
+      </div>
+    </div>
+
+    <!-- Panel de resumen para Google Doc -->
+    <div class="sum-panel" id="sum${a.id}">
+      <div class="sum-hdr">
+        <span>📋 Resumen para tu Google Doc</span>
+        <div style="display:flex;align-items:center;gap:7px">
+          <button class="btn-sec" id="regenBtn${a.id}" onclick="generateSummary(${a.id})" style="font-size:.68rem;padding:.3rem .7rem">↺ Regenerar</button>
+        </div>
+      </div>
+      <div class="sum-body" id="sumBody${a.id}"></div>
+      <div class="sum-copy-row">
+        <button class="btn-sec" onclick="copySummary(${a.id})">📋 Copiar resumen</button>
+        <span class="copy-ok" id="cpOk${a.id}">✓ Copiado — pégalo en el Google Doc</span>
+      </div>
+      <div class="sum-instructions">
+        <strong>Siguiente paso:</strong> abre tu Google Doc de Classroom, ve a la sección «Actividad ${a.id}» y pega este resumen. El docente verá tu respuesta final, el feedback recibido y tu autoevaluación.
+      </div>
+    </div>
+
+  </div>
+</div>`;
+}
+
+/* ════════════════════════════════════════════
+   INTERACCIONES
+════════════════════════════════════════════ */
+function toggleAct(n) {
+  const body = document.getElementById('body'+n);
+  const arr = document.getElementById('arr'+n);
+  const open = body.classList.contains('open');
+  body.classList.toggle('open', !open);
+  arr.classList.toggle('open', !open);
+}
+
+async function getFeedback(n, explicito) {
+  const ta = document.getElementById('ta'+n);
+  const respuesta = ta.value.trim();
+  if (respuesta.length < 30) {
+    showFb(n, '<span style="color:var(--cor);font-size:.8rem;">✋ Escribe al menos unas líneas en tu borrador antes de pedir feedback.</span>');
+    return;
+  }
+
+  const btn = document.getElementById(explicito ? 'expBtn'+n : 'fbBtn'+n);
+  btn.disabled = true;
+  const originalText = btn.textContent;
+  btn.textContent = '⏳ Analizando...';
+  showFb(n, '<div class="fb-thinking"><span>La IA está leyendo tu respuesta</span><span class="dot-anim"><span></span><span></span><span></span></span></div>');
+
+  const promptTemplate = explicito ? FB_EXPLICITO[n] : FB_FORMATIVO[n];
+  const systemPrompt = promptTemplate.replace('{R}', respuesta);
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 500,
+        system: systemPrompt,
+        messages: [{role:'user', content: explicito
+          ? 'Ya he recibido el feedback inicial y he intentado mejorar mi respuesta. Necesito orientación más explícita sobre qué me falta.'
+          : 'Por favor, analiza mi respuesta y dame feedback formativo.'
+        }]
+      })
+    });
+    const data = await res.json();
+    const text = data.content?.find(b=>b.type==='text')?.text || 'Error al obtener feedback.';
+    if (!state[n]) state[n] = {};
+    if (explicito) state[n].explicito = text; else state[n].feedback = text;
+    showFb(n, text);
+
+    // Mostrar botón de generar resumen si hay feedback
+    if (state[n].feedback) showSumBtn(n);
+
+  } catch(e) {
+    showFb(n, '<span style="color:var(--cor);font-size:.8rem;">❌ Error de conexión. Comprueba tu internet e inténtalo de nuevo.</span>');
+  }
+
+  btn.disabled = false;
+  btn.textContent = originalText;
+}
+
+function showFb(n, html) {
+  const panel = document.getElementById('fb'+n);
+  const body = document.getElementById('fbBody'+n);
+  panel.classList.add('show');
+  body.innerHTML = html;
+}
+
+function showSumBtn(n) {
+  // Añadir botón "Generar resumen" en el panel de feedback si no existe
+  const actions = document.querySelector('#fb'+n+' .fb-actions');
+  if (!document.getElementById('sumGenBtn'+n)) {
+    const btn = document.createElement('button');
+    btn.className = 'btn-fb';
+    btn.id = 'sumGenBtn'+n;
+    btn.style.fontSize = '.7rem';
+    btn.style.padding = '.42rem .9rem';
+    btn.innerHTML = '📋 Generar resumen para Google Doc';
+    btn.onclick = () => generateSummary(n);
+    actions.appendChild(btn);
+  }
+}
+
+async function generateSummary(n) {
+  const ta = document.getElementById('ta'+n);
+  const respuesta = ta.value.trim();
+  const fb = state[n]?.feedback || '';
+  if (!respuesta || !fb) return;
+
+  const sumPanel = document.getElementById('sum'+n);
+  const sumBody = document.getElementById('sumBody'+n);
+  sumPanel.classList.add('show');
+  sumBody.textContent = '⏳ Generando resumen...';
+
+  const act = ACTS.find(a=>a.id===n);
+  const systemPrompt = SUM_PROMPT
+    .replace('{N}', n)
+    .replace('{TITULO}', act.title)
+    .replace('{R}', respuesta)
+    .replace('{FB}', fb + (state[n]?.explicito ? '\n\nFeedback adicional (nivel explícito):\n'+state[n].explicito : ''));
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 600,
+        system: systemPrompt,
+        messages: [{role:'user', content:'Genera el resumen estructurado para este alumno.'}]
+      })
+    });
+    const data = await res.json();
+    const text = data.content?.find(b=>b.type==='text')?.text || 'Error al generar el resumen.';
+    sumBody.textContent = text;
+    if (!state[n]) state[n] = {};
+    state[n].summary = text;
+    document.querySelector('[data-id="'+n+'"]').classList.add('done');
+    updateProgress();
+  } catch(e) {
+    sumBody.textContent = '❌ Error de conexión. Inténtalo de nuevo.';
+  }
+}
+
+function copySummary(n) {
+  const text = document.getElementById('sumBody'+n).textContent;
+  if (!text || text.startsWith('⏳') || text.startsWith('❌')) return;
+  navigator.clipboard.writeText(text).then(() => {
+    const ok = document.getElementById('cpOk'+n);
+    ok.classList.add('show');
+    setTimeout(()=>ok.classList.remove('show'), 2500);
+  });
+}
+
+function updateProgress() {
+  const done = document.querySelectorAll('.act.done').length;
+  document.getElementById('progFill').style.width = (done*10)+'%';
+  document.getElementById('progPts').textContent = done+' / 10';
+}
+
+/* INIT */
+renderAll();
+</script>
+</body>
+</html>
